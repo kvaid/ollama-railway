@@ -1,19 +1,23 @@
 #!/bin/sh
 set -eu
 
-# Start Ollama in the background
+echo "Starting Ollama..."
 ollama serve &
 OLLAMA_PID=$!
 
-# Wait for Ollama API to come up
+echo "Waiting for Ollama API on 127.0.0.1:11434..."
 until curl -fsS http://127.0.0.1:11434/api/tags >/dev/null 2>&1; do
   sleep 2
 done
 
-# Pull the model once if it is not already on the mounted volume
+echo "Ollama API is up."
+
 if ! ollama list | grep -q "qwen3:8b"; then
+  echo "Pulling qwen3:8b..."
   ollama pull qwen3:8b
+else
+  echo "Model already present."
 fi
 
-# Keep container running with Ollama in foreground lifecycle
+echo "Ready."
 wait $OLLAMA_PID
