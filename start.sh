@@ -11,8 +11,8 @@ until curl -fsS http://127.0.0.1:11434/api/tags >/dev/null 2>&1; do
 done
 
 # Pull the model once if it is not already on the mounted volume
-if ! ollama list | grep -q "gpt-oss"; then
-  ollama pull gpt-oss:20b
+if ! ollama list | grep -q "qwen3:8b"; then
+  ollama pull qwen3:8b
 fi
 
 # Keep container running with Ollama in foreground lifecycle
